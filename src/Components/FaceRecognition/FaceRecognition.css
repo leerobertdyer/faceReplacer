@@ -1,0 +1,20 @@
+.top {
+    display: flex;
+    justify-content: center;
+}
+.parent {
+    position: relative;
+    display: flex;
+    width: fit-content;
+
+}
+
+
+.boundingBox {
+    position:absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    cursor:crosshair;
+
+}

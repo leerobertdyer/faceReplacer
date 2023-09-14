@@ -1,0 +1,15 @@
+.Tilt {
+    border: black solid 8px;
+    border-radius: 20px;
+    background-color: brown;
+    background-size: cover;
+    width: 150px;
+    height: 150px;
+    opacity: 70%;
+}   
+
+.Tilt:hover {
+    opacity: 100%;
+}
+
+
