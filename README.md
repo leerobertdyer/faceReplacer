@@ -1,6 +1,9 @@
-# Getting Started with Create React App
+Client facing code for Facereplacer,
+an app that uses Clarifai api to locate faces in images
+and then replaces them with a picture of your choice.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+
 
 ## Available Scripts
 
