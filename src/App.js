@@ -9,6 +9,7 @@ import './App.css';
 import ParticlesBg from 'particles-bg';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 
+// Using Key from Clarifai to use their api, specifically the FaceID API:
 const returnClarifaiRequestOptions = (imageURL) => {
   const PAT = '8444a47486e946b4938bf1a4b6320e18';
   const USER_ID = 'leerobertdyer';
@@ -60,6 +61,7 @@ class App extends Component {
     }
   }
 
+  //Setting up a loadUser method to check current user in Login/Register Components
   loadUser = (data) => {
     this.setState({
       user: {
@@ -71,6 +73,8 @@ class App extends Component {
       }
     })
   }
+
+  //Setting up a calcFaceLoc method to use Clarifai API to locate every face in an image:
   calcFaceLoc = (data) => {
     if (this.state.input !== ''){
     const image = document.getElementById('inputImage')
@@ -78,7 +82,7 @@ class App extends Component {
     const height = Number(image.height)
     const shorthand = data.outputs[0].data.regions;
     const myBoxes = [];
-  
+
     for (let i = 0; i < shorthand.length; i++) {
       let regions = shorthand[i].region_info.bounding_box
       myBoxes.push(regions)
@@ -95,21 +99,19 @@ class App extends Component {
     }
   }
   }
-
-
-
+//An input change event to communicate with the ImageLinkForm Component. Updates the current image URL:
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
   }
 
+  //Continuation of onInputChange, uses result to update the actual image URL state, using promises to apply API
   onButtonSubmit = () => {
-
     this.setState({ imageUrl: this.state.input })
     fetch("https://api.clarifai.com/v2/models/face-detection/outputs", returnClarifaiRequestOptions(this.state.input))
       .then(response => response.json())
       .then(resp => {
         if (resp) {
-         
+  // This part communicates with server side 'image' mainly to update the entries tab.
           fetch('http://localhost:3001/image', {
             method: 'put',
             headers: { 'content-type': 'application/json' },
@@ -121,13 +123,14 @@ class App extends Component {
         .then(count => {
           this.setState(Object.assign(this.state.user, {entries: count}))
         })
-        console.log(this.state.user.entries)
       }
+  // the final promise that actually calls the calcFaceLoc method on the image:
         this.calcFaceLoc(resp)
       })
 
   }
 
+  //A route method that handles 'page' changes from login/register to the actual app:
   onRouteChange = (route) => {
     if (route === "login") {
       this.setState({ isLoggedIn: false })
@@ -138,8 +141,7 @@ class App extends Component {
     this.setState({ route: route })
   }
 
-
-
+  // the actual app renderer:
   render() {
     const { route, isLoggedIn, imageUrl, boxes } = this.state;
     return (
