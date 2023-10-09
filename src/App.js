@@ -5,6 +5,7 @@ import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm';
 import Rank from './Components/Rank/Rank';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
+import Profile from './Components/Profile/Profile';
 import './App.css';
 import ParticlesBg from 'particles-bg';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
@@ -56,7 +57,8 @@ class App extends Component {
         name: '',
         email: "",
         joined: '',
-        entries: 0
+        entries: 0,
+        photos: []
       }
     }
   }
@@ -76,30 +78,31 @@ class App extends Component {
 
   //Setting up a calcFaceLoc method to use Clarifai API to locate every face in an image:
   calcFaceLoc = (data) => {
-    if (this.state.input !== ''){
-    const image = document.getElementById('inputImage')
-    const width = Number(image.width);
-    const height = Number(image.height)
-    const shorthand = data.outputs[0].data.regions;
-    const myBoxes = [];
+    if (this.state.input !== '') {
+      const image = document.getElementById('inputImage')
+      const width = Number(image.width);
+      const height = Number(image.height)
+      const shorthand = data.outputs[0].data.regions;
+      const myBoxes = [];
 
-    for (let i = 0; i < shorthand.length; i++) {
-      let regions = shorthand[i].region_info.bounding_box
-      myBoxes.push(regions)
-    }
-  
-    this.setState({ boxes: myBoxes })
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box
+      for (let i = 0; i < shorthand.length; i++) {
+        let regions = shorthand[i].region_info.bounding_box
+        myBoxes.push(regions)
+      }
 
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: clarifaiFace.right_col * width,
-      bottomRow: clarifaiFace.bottom_row * height
+      this.setState({ boxes: myBoxes })
+      const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box
+
+      return {
+        leftCol: clarifaiFace.left_col * width,
+        topRow: clarifaiFace.top_row * height,
+        rightCol: clarifaiFace.right_col * width,
+        bottomRow: clarifaiFace.bottom_row * height
+      }
     }
   }
-  }
-//An input change event to communicate with the ImageLinkForm Component. Updates the current image URL:
+
+  //An input change event to communicate with the ImageLinkForm Component. Updates the current image URL:
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
   }
@@ -111,20 +114,26 @@ class App extends Component {
       .then(response => response.json())
       .then(resp => {
         if (resp) {
-  // This part communicates with server side 'image' mainly to update the entries tab.
+          // This part communicates with server side 'image' mainly to update the entries tab.
           fetch('http://localhost:3001/image', {
             method: 'put',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
-              id: this.state.user.id
+              id: this.state.user.id,
+              url: this.state.input
             })
           })
-        .then(response => response.json())
-        .then(count => {
-          this.setState(Object.assign(this.state.user, {entries: count}))
-        })
-      }
-  // the final promise that actually calls the calcFaceLoc method on the image:
+            .then(response => response.json())
+            .then(data => {
+              this.setState({
+                user: { ...this.state.user, entries: data.entries }
+              });
+            })
+            .catch(error => {
+              console.error('Error updating entries:', error);
+            });
+        }
+        // the final promise that actually calls the calcFaceLoc method on the image:
         this.calcFaceLoc(resp)
       })
 
@@ -135,8 +144,11 @@ class App extends Component {
     if (route === "login") {
       this.setState({ isLoggedIn: false })
     }
-    else if (route === "home") {
+    else if (route === "home" || route === "profile") {
       this.setState({ isLoggedIn: true })
+    }
+    else if (route === "profile") { // Is this necessary? It's in the block below already...
+      this.setState({ route: route })
     }
     this.setState({ route: route })
   }
@@ -149,19 +161,24 @@ class App extends Component {
         <ParticlesBg color="FFFFFF" className="particles" num={100} type="cobweb" bg={true} />
         {route === "home"
           ? <div>
+            <Navigation isLoggedIn={isLoggedIn} setRouteLogin={this.onRouteChange} isProfile={route === "profile"}/>
             <div className='mb4 head'>
-              <Logo />
-              <Rank name={this.state.user.name} entries={this.state.user.entries} />
-              <Navigation isLoggedIn={isLoggedIn} setRouteLogin={this.onRouteChange} />
-            </div>
+              <Logo />  
             <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
+            <Rank name={this.state.user.name} entries={this.state.user.entries} />
+            </div>
             <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
           </div>
-          : (
-            route === "login"
-              ? <Login loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+          : route === "login"
+            ? <Login loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+            : route === "profile"
+              ? <div>
+                <Navigation isLoggedIn={isLoggedIn} setRouteLogin={this.onRouteChange} isProfile={route === "profile"} />
+                <Profile user={this.state.user} isLoggedIn={isLoggedIn}/>
+                </div>
               : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-          )
+
+
         }
 
 

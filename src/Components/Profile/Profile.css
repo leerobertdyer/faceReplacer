@@ -1,0 +1,16 @@
+figure {
+    width: 400px;
+    height: auto;
+    border: solid black 13px;
+    border-radius: 30%;
+}
+
+img {
+    border-radius: 25%;
+}
+
+#photos {
+    display: flex;
+    flex-wrap: column nowrap;
+    justify-content: center;
+}

@@ -2,6 +2,25 @@ Client facing code for Facereplacer,
 an app that uses Clarifai api to locate faces in images
 and then replaces them with a picture of your choice.
 
+WORK ON:
+
+Functionality
+    -Click on the "LOGO" component to change the photo you use to replace with.
+        -This may need further api to add transparancy to an image and make it work as intended
+    -Somehow I'd like to render an actual new image with the new faces as part of it.
+        -Currently they are just superimposed using divs.
+        -I bet I could get some kind of screen shot api...?
+    -Stay Signed In
+        -Right now if you reload the server it signs you out. Want to stay signed in until I sign out.
+    -Save before AND after photos in profile
+
+Design
+    -Mobile Friendly
+    -It's hideous. Let's spruce up css
+    -Menu is horrible and changes places throughout routes
+
+
+
 
 
 

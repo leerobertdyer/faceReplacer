@@ -2,7 +2,7 @@ import React from 'react';
 import './ImageLinkForm.css'
 const ImageLinkForm = ({ onInputChange, onButtonSubmit }) => {
     return (
-        <div className='ma4 mt=0 flex justify-center topper'>
+        <div className='ma1 mt=0 flex justify-center topper'>
             <div id="form">
                 <div className="shadow-4 shade">
          <p className="f3 bt bb pa1 bg-black b gold tc">

@@ -1,7 +1,23 @@
 
-nav {
-background-color: plum;
+.nav1 {
+    top: 0;
+    width: 100%;
+background-color: firebrick;
 border: solid gold 1px;
 border-radius: 20px;
-width: 130px;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
 }
+
+
+.nav2 {
+    top: 0;
+    width: 100%;
+background-color: rgb(91, 91, 223);
+border: solid gold 1px;
+border-radius: 20px;
+}
+
+
