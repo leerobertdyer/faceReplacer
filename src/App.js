@@ -125,10 +125,15 @@ class App extends Component {
           })
             .then(response => response.json())
             .then(data => {
-              this.setState({
-                user: { ...this.state.user, entries: data.entries }
-              });
+              if (data === 'Url already submitted') {
+                console.log('URL already submitted');
+              } else {
+                this.setState({
+                  user: { ...this.state.user, entries: data.entries }
+                });
+              }
             })
+
             .catch(error => {
               console.error('Error updating entries:', error);
             });
@@ -161,11 +166,11 @@ class App extends Component {
         <ParticlesBg color="FFFFFF" className="particles" num={100} type="cobweb" bg={true} />
         {route === "home"
           ? <div>
-            <Navigation isLoggedIn={isLoggedIn} setRouteLogin={this.onRouteChange} isProfile={route === "profile"}/>
+            <Navigation isLoggedIn={isLoggedIn} setRouteLogin={this.onRouteChange} isProfile={route === "profile"} />
             <div className='mb4 head'>
-              <Logo />  
-            <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
-            <Rank name={this.state.user.name} entries={this.state.user.entries} />
+              <Logo />
+              <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit} />
+              <Rank name={this.state.user.name} entries={this.state.user.entries} />
             </div>
             <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
           </div>
@@ -174,8 +179,8 @@ class App extends Component {
             : route === "profile"
               ? <div>
                 <Navigation isLoggedIn={isLoggedIn} setRouteLogin={this.onRouteChange} isProfile={route === "profile"} />
-                <Profile user={this.state.user} isLoggedIn={isLoggedIn}/>
-                </div>
+                <Profile user={this.state.user} isLoggedIn={isLoggedIn} />
+              </div>
               : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
 
 

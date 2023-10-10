@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Login.css'
 
 class Login extends Component {
   constructor(props) {
@@ -22,7 +23,6 @@ class Login extends Component {
     event.preventDefault();
     const { loginEmail, loginPassword } = this.state;
     if (!loginEmail.trim() || !loginPassword.trim()) {
-      console.log('error bro');
       return;
     }
 
@@ -47,8 +47,8 @@ class Login extends Component {
 
   render() {
     const { onRouteChange } = this.props
-    return (
-      <article className="br2 tc ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 center shadow-5">
+    return (<div className='mainDiv'>
+      <article className="br2 tc ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 center shadow-5 mt3">
         <main className="pa4 black-80">
           <form>
             <div className="measure">
@@ -87,6 +87,7 @@ class Login extends Component {
           </form>
         </main>
       </article>
+      </div>
     )
   }
 }

@@ -18,3 +18,7 @@
     cursor:crosshair;
 
 }
+
+#replacer {
+    transform: scale(125%);
+}

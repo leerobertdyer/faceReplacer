@@ -13,7 +13,7 @@ const FaceRecognition = ({ imageUrl, boxes }) => {
                 height: `${(boxData.bottom_row - boxData.top_row) * 100}%`, 
             }}
         >
-            <img
+            <img id="replacer"
                 src={Trump}
                 alt='Trump'
             />

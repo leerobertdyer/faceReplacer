@@ -13,6 +13,7 @@ Functionality
     -Stay Signed In
         -Right now if you reload the server it signs you out. Want to stay signed in until I sign out.
     -Save before AND after photos in profile
+    -Entries counts up even when using same pic over and over again
 
 Design
     -Mobile Friendly
