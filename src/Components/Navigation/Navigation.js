@@ -21,16 +21,7 @@ const Navigation = ({ setRouteLogin, isLoggedIn, isProfile }) => {
     }
 
     else {
-        return (
-            <div>
-                <div className=''>
-                <nav className="nav2">
-                    <p className="f3 link dim underline pa3 pointer" onClick={() => { setRouteLogin('login') }}>Sign In</p>
-                    <p className="f3 link dim underline pa3 pointer" onClick={() => { setRouteLogin('register') }}>Register</p>
-                </nav>
-            </div>
-            </div>
-        )
+        return 
     }
 
 
